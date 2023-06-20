@@ -3,7 +3,6 @@ from numpy import array, zeros # Importez toutes les fonctionalités de numpy
 import matplotlib
 from matplotlib.pyplot import imshow, show, colorbar
 
-# Attention: valeurs qui ne marchent que pour la colormap matplotlib.cm.jet !!!
 RED = 1.0
 BLUE = 0.0
 GREEN = 0.55
