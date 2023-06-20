@@ -38,6 +38,10 @@ pays3 = [0, 200, 200, 400]
 pays4 = [200, 200, 400, 400]
 
 
+def trier(liste_de_pays):
+    return list(sorted(liste_de_pays, key=lambda pays: (pays[1], pays[2])))
+
+
 def carte1():
     carte = empty((400, 400), dtype=float)
     colorier(carte, pays1, RED)
