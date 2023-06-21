@@ -1,3 +1,4 @@
+import numpy as np
 from numpy import *
 import matplotlib
 from matplotlib.pyplot import imshow, show, colorbar
@@ -25,6 +26,7 @@ def valeurs_voisines(carte, pays):
     if ymax < hauteur:
         valeurs = valeurs | set(carte[xmin:xmax, ymax])
     return list(valeurs)
+
 
 
 RED = 0.9

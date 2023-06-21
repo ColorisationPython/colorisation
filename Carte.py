@@ -10,5 +10,5 @@ from Donnees import D
 Max =np.max(D)
 #print(Max)
 
-Carte=zeros((Max,Max))
+carte=np.zeros((Max,Max))
 #print(Carte)
