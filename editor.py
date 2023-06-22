@@ -1,7 +1,14 @@
-import flet as ft
+import flet as ft # Installez avec "pip install flet"
 import flet.canvas as cv
 
 OFFSET_X, OFFSET_Y = 100, 100
+COLORMAP = {
+    "rouge": "#FF0000",
+    "noir": "#000000",
+    "jaune": "#FFFF00",
+    "bleu": "#0000FF",
+    "vert": "#00FF00",
+}
 
 x,y = None, None
 map = []
@@ -15,14 +22,32 @@ def read_map(path):
     with open(path, "r", encoding="utf-8") as f:
         lines = [l for l in f.read().splitlines() if l.strip()]
         for line in lines:
-            name, xmin, ymin, xmax, ymax = line.split()
-            map.append([int(xmin), int(ymin), int(xmax), int(ymax)])
+            color = None
+            try:
+                name, xmin, ymin, xmax, ymax = line.split()
+            except ValueError:
+                name, xmin, ymin, xmax, ymax, color = line.split()
+            map.append([int(xmin), int(ymin), int(xmax), int(ymax), color])
     draw_map()
 
 def draw_map():
     global canvas
     canvas.shapes[:] = []
-    for xmin, ymin, xmax, ymax in map:
+    for xmin, ymin, xmax, ymax, color in map:
+        if color:
+            canvas.shapes.append(
+                cv.Rect(
+                    xmin + OFFSET_X,
+                    ymin + OFFSET_Y,
+                    xmax - xmin,
+                    ymax - ymin,
+                    paint=ft.Paint(
+                        stroke_width=3,
+                        style=ft.PaintingStyle.FILL,
+                        color=COLORMAP[color],
+                    ),
+                )
+            )
         canvas.shapes.append(
             cv.Rect(
                 xmin + OFFSET_X,
@@ -52,8 +77,11 @@ def on_result(_):
 def on_save(_):
     path = file_saver.result.path
     with open(path, "w", encoding="utf-8") as file:
-        for i, (xmin, ymin, xmax, ymax) in enumerate(map):
-            file.write(f"P{i} {xmin} {ymin} {xmax} {ymax} \n")            
+        for i, (xmin, ymin, xmax, ymax, color) in enumerate(map):
+            if color:
+                file.write(f"P{i} {xmin} {ymin} {xmax} {ymax} {color} \n")
+            else:
+                file.write(f"P{i} {xmin} {ymin} {xmax} {ymax} \n")            
 
 def round_10(x):
     return int(round(x/10)*10)
@@ -87,7 +115,7 @@ def main(page: ft.Page):
         xmin, xmax = min(xmin, xmax), max(xmin, xmax)
         ymin, ymax = y, y + height
         ymin, ymax = min(ymin, ymax), max(ymin, ymax)
-        map.append([xmin, ymin, xmax, ymax])
+        map.append([xmin, ymin, xmax, ymax, None])
         
         canvas.update()
 
