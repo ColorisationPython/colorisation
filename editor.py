@@ -11,8 +11,30 @@ COLORMAP = {
 }
 
 x,y = None, None
+mouse_x, mouse_y = 0, 0
 map = []
 canvas = None
+color = None
+
+def set_red(_):
+    global color
+    color = "rouge"
+
+def set_blue(_):
+    global color
+    color = "bleu"
+
+def set_green(_):
+    global color
+    color = "vert"
+
+def set_yellow(_):
+    global color
+    color = "jaune"
+
+def set_color_None(_):
+    global color
+    color = None
 
 def read_map(path):
     global map
@@ -90,6 +112,23 @@ def main(page: ft.Page):
     global canvas, file_picker, file_saver
     page.title = "Flet Map Editor"
 
+    def hover(e):
+        global mouse_x, mouse_y
+        mouse_x, mouse_y = e.local_x, e.local_y
+
+    def tap(e):
+        x, y = mouse_x - OFFSET_X, mouse_y - OFFSET_Y
+        #print(x, y)
+        for i, pays in enumerate(map):
+            xmin, ymin, xmax, ymax, _ = pays
+            # print(f"{i} -------------------")
+            # print(xmin, x, xmax)
+            # print(ymin, y, ymax)
+            if xmin <= x <= xmax and ymin <= y <= ymax:
+                if color:
+                    map[i][-1] = color
+                    draw_map()
+
     def pan_start(e: ft.DragStartEvent):
         global x, y
         x = round_10(e.local_x)
@@ -130,6 +169,8 @@ def main(page: ft.Page):
             ),
         ],
         content=ft.GestureDetector(
+            on_hover=hover,
+            on_tap = tap,
             on_pan_start=pan_start,
             on_pan_update=pan_update,
             on_pan_end=pan_end,
@@ -163,8 +204,12 @@ def main(page: ft.Page):
         ft.ElevatedButton(
             "Save map ...", 
             on_click=save_map,
-        )
-        ])
+        ),
+        ft.IconButton(icon=ft.icons.FORMAT_COLOR_FILL, icon_color="red", on_click=set_red),
+        ft.IconButton(icon=ft.icons.FORMAT_COLOR_FILL, icon_color="blue", on_click=set_blue),
+        ft.IconButton(icon=ft.icons.FORMAT_COLOR_FILL, icon_color="yellow", on_click=set_yellow),
+        ft.IconButton(icon=ft.icons.FORMAT_COLOR_FILL, icon_color="green", on_click=set_green),
+        ft.IconButton(icon=ft.icons.CROP_SQUARE, icon_color="black", on_click=set_color_None)])
     )
 
 ft.app(main)
