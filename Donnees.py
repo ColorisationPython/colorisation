@@ -16,7 +16,7 @@ d=f.replace(' ','\n').split()
 
 #Supression des "Pi"
 l=int(len(d)/5)
-# print(l)
+#print(l)
 for i in range (0,4*l,4):
     del(d[i])
 #print(d)

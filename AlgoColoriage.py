@@ -32,6 +32,7 @@ if e<=e1 :
     D=Dt
 else :
     D=Dt1
+print(D)
 
 l=len(D)
 print(l)

@@ -25,7 +25,7 @@ pays=[Dt[0,0],Dt[0,1],Dt[0,2],Dt[0,3]]
 V=sorted(valeurs_voisines(carte,pays))
 
 #coloriage de tous les pays d'une couleur différentes
-for i in range (1,l):
+for i in range(1, l):
 #Définition du pays de travail
     xmin=Dt[i,0]
     ymin=Dt[i,1]
@@ -34,14 +34,6 @@ for i in range (1,l):
     pays=[xmin,ymin,xmax,ymax]
     c=i/(l+1)
     colorier(carte,pays,c)
-    
-    #Comparason du nombre de voisin en fonction des couleurs avoisinantes :
-    
-    # if len(sorted(valeurs_voisines(carte,pays))) > len(V) :
-    #     T=[xmin,ymin,xmax,ymax]
-    #     Dt[i-1,:]=Dt[i,:]
-    #     Dt[i,:]=T
-    #plus V est long plus le pays a de voisins
     
 Dt = [list(x) for x in Dt]
 # print(Dt)
@@ -59,7 +51,7 @@ for i in range (0,l):
     xmin=Dt1[i,0]
     ymin=Dt1[i,1]
     xmax=Dt1[i,2]
-    ymax=Dt[i,3]
+    ymax=Dt1[i,3]
     pays=[xmin,ymin,xmax,ymax]
     colorier(carte,pays,0.0)
 
